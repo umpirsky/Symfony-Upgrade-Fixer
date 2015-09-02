@@ -1,4 +1,4 @@
-# Symfony-Upgrade-Fixer
+# Symfony-Upgrade-Fixer [![Build Status](https://travis-ci.org/umpirsky/Symfony-Upgrade-Fixer.svg)](https://travis-ci.org/umpirsky/Symfony-Upgrade-Fixer)
 
     Note: This project is under development.
 
