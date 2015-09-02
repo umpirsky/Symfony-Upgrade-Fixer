@@ -2,7 +2,7 @@
 
 namespace Symfony\Upgrade\Test\Fixer;
 
-class ProgressBarFixerTest extends AbstractFixerTestBase
+class PropertyAccessFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
@@ -16,7 +16,6 @@ class ProgressBarFixerTest extends AbstractFixerTestBase
     {
         return [
             $this->prepareTestCase('case1-output.php', 'case1-input.php'),
-            $this->prepareTestCase('case2-output.php', 'case2-input.php'),
         ];
     }
 }

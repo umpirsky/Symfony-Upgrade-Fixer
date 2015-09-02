@@ -2,7 +2,6 @@
 
 namespace Symfony\Upgrade\Fixer;
 
-use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 class ProgressBarFixer extends AbstractFixer
@@ -11,41 +10,17 @@ class ProgressBarFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $used = $this->fixUseDeclarations($tokens);
+        $used = $this->fixUseDeclarations(
+            $tokens,
+            ['Symfony', 'Component', 'Console', 'Helper', 'ProgressHelper'],
+            'ProgressBar'
+        );
 
         if ($used) {
             $this->fixUsages($tokens);
         }
 
         return $tokens->generateCode();
-    }
-
-    private function fixUseDeclarations(Tokens $tokens)
-    {
-        $useTokens = $tokens->findSequence([
-            [T_USE],
-            [T_STRING, 'Symfony'],
-            [T_NS_SEPARATOR],
-            [T_STRING, 'Component'],
-            [T_NS_SEPARATOR],
-            [T_STRING, 'Console'],
-            [T_NS_SEPARATOR],
-            [T_STRING, 'Helper'],
-            [T_NS_SEPARATOR],
-            [T_STRING, 'ProgressHelper'],
-            ';',
-        ]);
-
-        if (null === $useTokens) {
-            return false;
-        }
-
-        $useTokensIndexes = array_keys($useTokens);
-
-        $classNameToken = $useTokens[$useTokensIndexes[count($useTokensIndexes) - 2]];
-        $classNameToken->setContent('ProgressBar');
-
-        return true;
     }
 
     private function fixUsages(Tokens $tokens)
@@ -61,8 +36,9 @@ class ProgressBarFixer extends AbstractFixer
 
         $newTokensIndexes = array_keys($newTokens);
 
-        $classNameToken = $newTokens[$newTokensIndexes[count($newTokensIndexes) - 1]];
-        $classNameToken->setContent('ProgressBar');
+        $newTokens[$newTokensIndexes[count($newTokensIndexes) - 1]]
+            ->setContent('ProgressBar')
+        ;
 
         $this->fixUsages($tokens);
     }
