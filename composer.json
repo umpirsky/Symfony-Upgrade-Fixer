@@ -1,0 +1,38 @@
+{
+    "name": "umpirsky/symfony-upgrade-fixer",
+    "type": "application",
+    "description": "Analyzes your Symfony project and tries to make it compatible with the new version of Symfony framework.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saša Stamenković",
+            "email": "umpirsky@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "fabpot/php-cs-fixer": "^1.10"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Upgrade\\": "src/Symfony/Upgrade/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\Upgrade\\Test\\": "tests/Symfony/Upgrade/Test/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "bin": ["symfony-upgrade-fixer"]
+}
