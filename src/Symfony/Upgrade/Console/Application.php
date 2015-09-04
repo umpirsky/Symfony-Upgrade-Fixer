@@ -3,7 +3,7 @@
 namespace Symfony\Upgrade\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Upgrade\FixCommand;
+use Symfony\Upgrade\Console\Command\FixCommand;
 use Symfony\Upgrade\Fixer;
 
 class Application extends BaseApplication
