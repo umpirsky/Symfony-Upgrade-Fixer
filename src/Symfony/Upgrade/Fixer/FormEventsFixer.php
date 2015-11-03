@@ -4,7 +4,7 @@ namespace Symfony\Upgrade\Fixer;
 
 use Symfony\CS\Tokenizer\Tokens;
 
-class FormEventsFixer extends AbstractFixer
+class FormEventsFixer extends RenameFixer
 {
     public function fix(\SplFileInfo $file, $content)
     {
@@ -16,38 +16,12 @@ class FormEventsFixer extends AbstractFixer
         );
 
         if ($used) {
-            $this->fixUsages($tokens);
+            $this->renameConstants($tokens, 'FormEvents', 'PRE_BIND', 'PRE_SUBMIT');
+            $this->renameConstants($tokens, 'FormEvents', 'BIND', 'SUBMIT');
+            $this->renameConstants($tokens, 'FormEvents', 'POST_BIND', 'POST_SUBMIT');
         }
 
         return $tokens->generateCode();
-    }
-
-    private function fixUsages(Tokens $tokens)
-    {
-        $this->fixPrefixUsages($tokens, 'PRE_');
-        $this->fixPrefixUsages($tokens);
-        $this->fixPrefixUsages($tokens, 'POST_');
-    }
-
-    private function fixPrefixUsages(Tokens $tokens, $prefix = '')
-    {
-        $formEventTokens = $tokens->findSequence([
-            [T_STRING, 'FormEvents'],
-            [T_DOUBLE_COLON],
-            [T_STRING, $prefix.'BIND']
-       ]);
-
-        if (null === $formEventTokens) {
-            return;
-        }
-
-        $formEventTokensIndexes = array_keys($formEventTokens);
-
-        $formEventTokens[$formEventTokensIndexes[count($formEventTokensIndexes) - 1]]
-            ->setContent($prefix.'SUBMIT')
-        ;
-
-        $this->fixUsages($tokens);
     }
 
     public function getDescription()

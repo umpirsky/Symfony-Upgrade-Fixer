@@ -10,14 +10,14 @@ class ProgressBarFixer extends RenameFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $used = $this->renameUseDeclarations(
+        $used = $this->renameUseStatements(
             $tokens,
             ['Symfony', 'Component', 'Console', 'Helper', 'ProgressHelper'],
             'ProgressBar'
         );
 
         if ($used) {
-            $this->renameUsages($tokens, 'ProgressHelper', 'ProgressBar');
+            $this->renameNewStatements($tokens, 'ProgressHelper', 'ProgressBar');
         }
 
         return $tokens->generateCode();

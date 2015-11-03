@@ -6,38 +6,82 @@ use Symfony\CS\Tokenizer\Tokens;
 
 abstract class RenameFixer extends AbstractFixer
 {
-    protected function renameUseDeclarations(Tokens $tokens, array $oldFqcn, $newClassName)
+    protected function renameUseStatements(Tokens $tokens, array $oldFqcn, $newClassName)
     {
-        $useTokens = $this->getUseDeclarations($tokens, $oldFqcn);
-        if (null === $useTokens) {
+        $matchedTokens = $this->getUseDeclarations($tokens, $oldFqcn);
+        if (null === $matchedTokens) {
             return false;
         }
 
-        $useTokensIndexes = array_keys($useTokens);
+        $matchedTokensIndexes = array_keys($matchedTokens);
 
-        $classNameToken = $useTokens[$useTokensIndexes[count($useTokensIndexes) - 2]];
+        $classNameToken = $matchedTokens[$matchedTokensIndexes[count($matchedTokensIndexes) - 2]];
         $classNameToken->setContent($newClassName);
 
         return true;
     }
 
-    protected function renameUsages(Tokens $tokens, $old, $new)
+    protected function renameNewStatements(Tokens $tokens, $old, $new)
     {
-        $newTokens = $tokens->findSequence([
+        $matchedTokens = $tokens->findSequence([
             [T_NEW],
             [T_STRING, $old],
        ]);
 
-        if (null === $newTokens) {
+        if (null === $matchedTokens) {
             return;
         }
 
-        $newTokensIndexes = array_keys($newTokens);
+        $matchedndexes = array_keys($matchedTokens);
 
-        $newTokens[$newTokensIndexes[count($newTokensIndexes) - 1]]
+        $matchedTokens[$matchedndexes[count($matchedndexes) - 1]]
             ->setContent($new)
         ;
 
-        $this->renameUsages($tokens, $old, $new);
+        $this->renameNewStatements($tokens, $old, $new);
+    }
+
+    protected function renameMethodCalls(Tokens $tokens, $className, $old, $new)
+    {
+        $matchedTokens = $tokens->findSequence([
+            [T_STRING, $className],
+            [T_DOUBLE_COLON],
+            [T_STRING, $old],
+            '(',
+            ')',
+       ]);
+
+        if (null === $matchedTokens) {
+            return;
+        }
+
+        $matchedTokensIndexes = array_keys($matchedTokens);
+
+        $matchedTokens[$matchedTokensIndexes[count($matchedTokensIndexes) - 3]]
+            ->setContent($new)
+        ;
+
+        $this->renameMethodCalls($tokens, $className, $old, $new);
+    }
+
+    protected function renameConstants(Tokens $tokens, $className, $old, $new)
+    {
+        $matchedTokens = $tokens->findSequence([
+            [T_STRING, $className],
+            [T_DOUBLE_COLON],
+            [T_STRING, $old]
+       ]);
+
+        if (null === $matchedTokens) {
+            return;
+        }
+
+        $matchedTokensIndexes = array_keys($matchedTokens);
+
+        $matchedTokens[$matchedTokensIndexes[count($matchedTokensIndexes) - 1]]
+            ->setContent($new)
+        ;
+
+        $this->renameConstants($tokens, $className, $old, $new);
     }
 }

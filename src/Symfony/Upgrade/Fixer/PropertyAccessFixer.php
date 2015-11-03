@@ -4,7 +4,7 @@ namespace Symfony\Upgrade\Fixer;
 
 use Symfony\CS\Tokenizer\Tokens;
 
-class PropertyAccessFixer extends AbstractFixer
+class PropertyAccessFixer extends RenameFixer
 {
     public function fix(\SplFileInfo $file, $content)
     {
@@ -16,33 +16,10 @@ class PropertyAccessFixer extends AbstractFixer
         );
 
         if ($used) {
-            $this->fixUsages($tokens);
+            $this->renameMethodCalls($tokens, 'PropertyAccess', 'getPropertyAccessor', 'createPropertyAccessor');
         }
 
         return $tokens->generateCode();
-    }
-
-    private function fixUsages(Tokens $tokens)
-    {
-        $propertyAccessTokens = $tokens->findSequence([
-            [T_STRING, 'PropertyAccess'],
-            [T_DOUBLE_COLON],
-            [T_STRING, 'getPropertyAccessor'],
-            '(',
-            ')',
-       ]);
-
-        if (null === $propertyAccessTokens) {
-            return;
-        }
-
-        $propertyAccessTokensIndexes = array_keys($propertyAccessTokens);
-
-        $propertyAccessTokens[$propertyAccessTokensIndexes[count($propertyAccessTokensIndexes) - 3]]
-            ->setContent('createPropertyAccessor')
-        ;
-
-        $this->fixUsages($tokens);
     }
 
     public function getDescription()
