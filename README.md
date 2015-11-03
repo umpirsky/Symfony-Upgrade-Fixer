@@ -12,3 +12,9 @@ The ``fix`` command tries to fix as much upgrade issues as possible on a given f
 $ symfony-upgrade-fixer fix /path/to/dir
 $ symfony-upgrade-fixer fix /path/to/file
 ```
+
+The `--dry-run` option displays the files that need to be fixed but without actually modifying them:
+
+```bash
+$ symfony-upgrade-fixer fix /path/to/code --dry-run
+```
