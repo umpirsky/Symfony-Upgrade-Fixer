@@ -2,25 +2,15 @@
 
 namespace Symfony\Upgrade\Fixer;
 
-use Symfony\CS\Tokenizer\Tokens;
-
-class ProgressBarFixer extends RenameFixer
+class ProgressBarFixer extends RenameClassFixer
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
-
-        $used = $this->renameUseStatements(
-            $tokens,
+        return $this->rename(
+            $content,
             ['Symfony', 'Component', 'Console', 'Helper', 'ProgressHelper'],
             'ProgressBar'
         );
-
-        if ($used) {
-            $this->renameNewStatements($tokens, 'ProgressHelper', 'ProgressBar');
-        }
-
-        return $tokens->generateCode();
     }
 
     public function getDescription()
