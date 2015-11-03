@@ -14,22 +14,7 @@ abstract class AbstractFixer extends BaseAbstractFixer
         return null !== $useTokens;
     }
 
-    protected function fixUseDeclarations(Tokens $tokens, array $fqcn, $className)
-    {
-        $useTokens = $this->getUseDeclarations($tokens, $fqcn);
-        if (null === $useTokens) {
-            return false;
-        }
-
-        $useTokensIndexes = array_keys($useTokens);
-
-        $classNameToken = $useTokens[$useTokensIndexes[count($useTokensIndexes) - 2]];
-        $classNameToken->setContent($className);
-
-        return true;
-    }
-
-    private function getUseDeclarations(Tokens $tokens, array $fqcn)
+    protected function getUseDeclarations(Tokens $tokens, array $fqcn)
     {
         $sequence = [[T_USE]];
 
