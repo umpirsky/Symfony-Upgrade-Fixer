@@ -61,7 +61,7 @@ class FixCommand extends Command
             $output->write(sprintf('%4d) %s', $i++, $file));
 
             if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult)));
             }
 
             $output->writeln('');
