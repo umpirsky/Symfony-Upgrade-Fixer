@@ -20,5 +20,8 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 ## Fixers available
 
 | Name  | Description |
-| ----  | ----------- |
-%s
+| ----  | ----------- |%s
+
+## Contribute
+
+The tool is based on PHP Coding Standards Fixer and the [contributing process](https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md) is very similar. I see no sense in re-doing it so far.

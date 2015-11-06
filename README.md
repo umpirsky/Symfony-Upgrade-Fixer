@@ -26,3 +26,6 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 | progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
 | inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
 
+## Contribute
+
+The tool is based on PHP Coding Standards Fixer and the [contributing process](https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md) is very similar. I see no sense in re-doing it so far.

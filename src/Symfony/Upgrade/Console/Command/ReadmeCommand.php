@@ -21,7 +21,7 @@ class ReadmeCommand extends Command
     {
         $fixersContent = '';
         foreach (new FixerIterator() as $fixer) {
-            $fixersContent .= sprintf('| %s | %s |', $fixer->getName(), $fixer->getDescription()).PHP_EOL;
+            $fixersContent .= PHP_EOL.sprintf('| %s | %s |', $fixer->getName(), $fixer->getDescription());
         }
 
         $output->write(sprintf(
