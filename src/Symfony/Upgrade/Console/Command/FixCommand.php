@@ -30,19 +30,14 @@ class FixCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
-
         $errorsManager = new ErrorsManager();
         $stopwatch = new Stopwatch();
 
-        if (is_file($path)) {
-            $finder = new \ArrayIterator([new \SplFileInfo($path)]);
-        } else {
-            $finder = new DefaultFinder();
-            $finder->setDir($path);
-        }
-
-        $this->fixer = new Fixer($finder, $errorsManager, $stopwatch);
+        $this->fixer = new Fixer(
+            $this->getFinder($input->getArgument('path')),
+            $errorsManager,
+            $stopwatch
+        );
         $this->fixer->registerBuiltInFixers();
 
         $stopwatch->start('fixFiles');
@@ -94,5 +89,17 @@ class FixCommand extends Command
         }
 
         return empty($changed) ? 0 : 1;
+    }
+
+    private function getFinder($path)
+    {
+        if (is_file($path)) {
+            return new \ArrayIterator([new \SplFileInfo($path)]);
+        }
+
+        $finder = new DefaultFinder();
+        $finder->setDir($path);
+
+        return $finder;
     }
 }
