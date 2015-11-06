@@ -21,8 +21,4 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 
 | Name  | Description |
 | ----  | ----------- |
-| property_access | Renamed PropertyAccess::getPropertyAccessor to PropertyAccess::createPropertyAccessor. |
-| form_events | Renamed FormEvents::BIND to FormEvents::SUBMIT. |
-| progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
-| inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
-
+%s

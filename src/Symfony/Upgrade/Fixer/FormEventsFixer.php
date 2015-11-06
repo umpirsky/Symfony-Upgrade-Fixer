@@ -26,6 +26,6 @@ class FormEventsFixer extends RenameFixer
 
     public function getDescription()
     {
-        return 'Renamed FormEvents::*_BIND to FormEvents::*_SUBMIT.';
+        return 'Renamed FormEvents::BIND to FormEvents::SUBMIT.';
     }
 }

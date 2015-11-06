@@ -3,7 +3,6 @@
 namespace Symfony\Upgrade\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Upgrade\Console\Command\FixCommand;
 use Symfony\Upgrade\Fixer;
 
 class Application extends BaseApplication
@@ -12,6 +11,7 @@ class Application extends BaseApplication
     {
         parent::__construct('Symfony Upgrade Fixer', Fixer::VERSION);
 
-        $this->add(new FixCommand());
+        $this->add(new Command\FixCommand());
+        $this->add(new Command\ReadmeCommand());
     }
 }

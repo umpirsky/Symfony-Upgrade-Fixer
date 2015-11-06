@@ -69,7 +69,7 @@ abstract class RenameFixer extends AbstractFixer
         $matchedTokens = $tokens->findSequence([
             [T_STRING, $className],
             [T_DOUBLE_COLON],
-            [T_STRING, $old]
+            [T_STRING, $old],
        ]);
 
         if (null === $matchedTokens) {

@@ -8,6 +8,7 @@ use Symfony\CS\Tokenizer\Tokens;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Upgrade\Fixer\Iterator\FixerIterator;
 
 class Fixer
 {
@@ -30,14 +31,8 @@ class Fixer
 
     public function registerBuiltInFixers()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
-            $class = 'Symfony\\Upgrade\\Fixer\\'.$file->getBasename('.php');
-
-            if ((new \ReflectionClass($class))->isAbstract()) {
-                continue;
-            }
-
-            $this->addFixer(new $class());
+        foreach (new FixerIterator() as $fixer) {
+            $this->addFixer($fixer);
         }
     }
 
