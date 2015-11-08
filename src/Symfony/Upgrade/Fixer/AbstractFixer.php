@@ -9,9 +9,7 @@ abstract class AbstractFixer extends BaseAbstractFixer
 {
     protected function hasUseDeclarations(Tokens $tokens, array $fqcn)
     {
-        $useTokens = $this->getUseDeclarations($tokens, $fqcn);
-
-        return null !== $useTokens;
+        return null !== $this->getUseDeclarations($tokens, $fqcn);
     }
 
     protected function getUseDeclarations(Tokens $tokens, array $fqcn)

@@ -32,9 +32,9 @@ abstract class RenameFixer extends AbstractFixer
             return;
         }
 
-        $matchedndexes = array_keys($matchedTokens);
+        $matchedIndexes = array_keys($matchedTokens);
 
-        $matchedTokens[$matchedndexes[count($matchedndexes) - 1]]
+        $matchedTokens[$matchedIndexes[count($matchedIndexes) - 1]]
             ->setContent($new)
         ;
 

@@ -26,6 +26,6 @@ class FormEventsFixer extends RenameFixer
 
     public function getDescription()
     {
-        return 'Renamed FormEvents::BIND to FormEvents::SUBMIT.';
+        return 'The events PRE_BIND, BIND and POST_BIND were renamed to PRE_SUBMIT, SUBMIT and POST_SUBMIT.';
     }
 }
