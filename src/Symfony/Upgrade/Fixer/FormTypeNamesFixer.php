@@ -129,7 +129,7 @@ class FormTypeNamesFixer extends AbstractFixer
                 new Token([T_DOUBLE_COLON, '::']),
             ]
         );
-        $matchedTokens[$matchedIndex]->override([10007, 'class']);
+        $matchedTokens[$matchedIndex]->override([10002, 'class']);
 
         $this->fixTypeNames($tokens, $name);
     }
