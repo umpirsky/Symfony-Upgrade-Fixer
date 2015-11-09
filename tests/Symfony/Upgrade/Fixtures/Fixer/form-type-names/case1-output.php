@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\UserBundle\Form\Type;
+namespace Umpirsky\UpgradeBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

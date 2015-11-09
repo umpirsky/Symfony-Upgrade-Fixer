@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\UserBundle\Form\Type;
+namespace Umpirsky\UpgradeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

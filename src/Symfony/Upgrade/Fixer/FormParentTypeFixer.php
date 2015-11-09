@@ -5,7 +5,7 @@ namespace Symfony\Upgrade\Fixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
-class FormTypeNamesFixer extends FormTypeFixer
+class FormParentTypeFixer extends FormTypeFixer
 {
     public function fix(\SplFileInfo $file, $content)
     {
@@ -13,12 +13,12 @@ class FormTypeNamesFixer extends FormTypeFixer
 
         if ($this->isFormType($tokens)) {
             foreach ($this->types as $type) {
-                if (null === $this->matchTypeName($tokens, $type)) {
+                if (null === $this->matchGetParentMethod($tokens, $type)) {
                     continue;
                 }
 
                 $this->addTypeUse($tokens, $type);
-                $this->fixTypeNames($tokens, $type);
+                $this->fixParentTypes($tokens, $type);
             }
         }
 
@@ -27,31 +27,35 @@ class FormTypeNamesFixer extends FormTypeFixer
 
     public function getDescription()
     {
-        return 'Instead of referencing types by name, you should reference them by their fully-qualified class name (FQCN) instead.';
+        return 'Returning type instances from FormTypeInterface::getParent() is deprecated, return the fully-qualified class name of the parent type class instead.';
     }
 
-    private function matchTypeName(Tokens $tokens, $name)
+    private function matchGetParentMethod(Tokens $tokens, $name)
     {
         return $tokens->findSequence([
-            [T_OBJECT_OPERATOR],
-            [T_STRING, 'add'],
+            [T_PUBLIC, 'public'],
+            [T_FUNCTION],
+            [T_STRING, 'getParent'],
             '(',
-            [T_CONSTANT_ENCAPSED_STRING],
-            ',',
+            ')',
+            '{',
+            [T_RETURN],
             [T_CONSTANT_ENCAPSED_STRING, sprintf("'%s'", strtolower($name))],
+            ';',
+            '}',
         ]);
     }
 
-    private function fixTypeNames(Tokens $tokens, $name)
+    private function fixParentTypes(Tokens $tokens, $name)
     {
-        $matchedTokens = $this->matchTypeName($tokens, $name);
+        $matchedTokens = $this->matchGetParentMethod($tokens, $name);
         if (null === $matchedTokens) {
             return;
         }
 
         $matchedIndexes = array_keys($matchedTokens);
 
-        $matchedIndex = $matchedIndexes[count($matchedIndexes) - 1];
+        $matchedIndex = $matchedIndexes[count($matchedIndexes) - 3];
 
         $tokens->insertAt(
             $matchedIndex,
@@ -62,6 +66,6 @@ class FormTypeNamesFixer extends FormTypeFixer
         );
         $matchedTokens[$matchedIndex]->override([self::T_CLASS, 'class']);
 
-        $this->fixTypeNames($tokens, $name);
+        $this->fixParentTypes($tokens, $name);
     }
 }

@@ -26,6 +26,7 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 | form_events | The events PRE_BIND, BIND and POST_BIND were renamed to PRE_SUBMIT, SUBMIT and POST_SUBMIT. |
 | progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
 | inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
+| form_parent_type | Returning type instances from FormTypeInterface::getParent() is deprecated, return the fully-qualified class name of the parent type class instead. |
 
 ## Contribute
 
