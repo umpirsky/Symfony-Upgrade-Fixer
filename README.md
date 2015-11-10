@@ -21,13 +21,13 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 
 | Name  | Description |
 | ----  | ----------- |
-| property_access | Renamed PropertyAccess::getPropertyAccessor to PropertyAccess::createPropertyAccessor. |
-| form_type_names | Instead of referencing types by name, you should reference them by their fully-qualified class name (FQCN) instead. |
 | form_events | The events PRE_BIND, BIND and POST_BIND were renamed to PRE_SUBMIT, SUBMIT and POST_SUBMIT. |
-| progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
-| inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
-| form_parent_type | Returning type instances from FormTypeInterface::getParent() is deprecated, return the fully-qualified class name of the parent type class instead. |
 | form_option_names | Options precision and virtual was renamed to scale and inherit_data. |
+| form_parent_type | Returning type instances from FormTypeInterface::getParent() is deprecated, return the fully-qualified class name of the parent type class instead. |
+| form_type_names | Instead of referencing types by name, you should reference them by their fully-qualified class name (FQCN) instead. |
+| inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
+| progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
+| property_access | Renamed PropertyAccess::getPropertyAccessor to PropertyAccess::createPropertyAccessor. |
 
 ## Contribute
 

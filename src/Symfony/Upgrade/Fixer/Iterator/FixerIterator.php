@@ -10,7 +10,7 @@ class FixerIterator implements \Iterator
 
     public function __construct()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/..')->depth(0) as $file) {
+        foreach (Finder::create()->files()->in(__DIR__.'/..')->sortByName()->depth(0) as $file) {
             $class = 'Symfony\\Upgrade\\Fixer\\'.$file->getBasename('.php');
 
             if ((new \ReflectionClass($class))->isAbstract()) {
