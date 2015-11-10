@@ -1,4 +1,3 @@
-bin
-composer.lock
-vendor
-phpunit.xml
+/bin/
+/phpunit.xml
+/vendor/
