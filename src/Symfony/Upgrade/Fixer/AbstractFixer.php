@@ -7,9 +7,6 @@ use Symfony\CS\Tokenizer\Tokens;
 
 abstract class AbstractFixer extends BaseAbstractFixer
 {
-    // TODO: replace this with php token
-    const T_CLASS = 10002;
-
     protected function hasUseDeclarations(Tokens $tokens, array $fqcn)
     {
         return null !== $this->getUseDeclarations($tokens, $fqcn);

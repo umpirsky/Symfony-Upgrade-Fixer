@@ -64,7 +64,7 @@ class FormParentTypeFixer extends FormTypeFixer
                 new Token([T_DOUBLE_COLON, '::']),
             ]
         );
-        $matchedTokens[$matchedIndex]->override([self::T_CLASS, 'class']);
+        $matchedTokens[$matchedIndex]->override([CT_CLASS_CONSTANT, 'class']);
 
         $this->fixParentTypes($tokens, $name);
     }
