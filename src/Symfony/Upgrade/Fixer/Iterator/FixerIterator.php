@@ -4,7 +4,7 @@ namespace Symfony\Upgrade\Fixer\Iterator;
 
 use Symfony\Component\Finder\Finder;
 
-class FixerIterator implements \Iterator
+class FixerIterator implements \IteratorAggregate
 {
     protected $fixers = [];
 
@@ -17,39 +17,12 @@ class FixerIterator implements \Iterator
                 continue;
             }
 
-            $this->attach(new $class());
+            $this->fixers[] = new $class();
         }
-
-        $this->rewind();
     }
 
-    public function attach($fixer)
+    public function getIterator()
     {
-        $this->fixers[] = $fixer;
-    }
-
-    public function rewind()
-    {
-        reset($this->fixers);
-    }
-
-    public function valid()
-    {
-        return false !== $this->current();
-    }
-
-    public function next()
-    {
-        next($this->fixers);
-    }
-
-    public function current()
-    {
-        return current($this->fixers);
-    }
-
-    public function key()
-    {
-        return key($this->fixers);
+        return new \ArrayIterator($this->fixers);
     }
 }
