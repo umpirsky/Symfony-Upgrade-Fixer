@@ -34,5 +34,5 @@
             "dev-master": "0.1-dev"
         }
     },
-    "bin": ["symfony-upgrade-fixer"]
+    "bin": ["bin/symfony-upgrade-fixer"]
 }
