@@ -16,9 +16,6 @@
     "require-dev": {
         "phpunit/phpunit": "^4.8"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Symfony\\Upgrade\\": "src/Symfony/Upgrade/"
@@ -34,5 +31,5 @@
             "dev-master": "0.1-dev"
         }
     },
-    "bin": ["symfony-upgrade-fixer"]
+    "bin": ["bin/symfony-upgrade-fixer"]
 }
