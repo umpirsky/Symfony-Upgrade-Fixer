@@ -2,7 +2,6 @@
 
 namespace Symfony\Upgrade\Fixer;
 
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 class FormOptionNamesFixer extends FormTypeFixer
@@ -75,7 +74,7 @@ class FormOptionNamesFixer extends FormTypeFixer
             if ("'$oldName'" === $token->getContent()) {
                 $token->setContent("'$newName'");
             }
-        } while (!in_array($token->getContent(), [')', ']']) );
+        } while (!in_array($token->getContent(), [')', ']']));
 
         $this->fixOptionNames($tokens, $fieldNameTokens, $oldName, $newName, $index);
     }
