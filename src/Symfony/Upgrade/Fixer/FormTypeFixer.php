@@ -41,7 +41,7 @@ abstract class FormTypeFixer extends AbstractFixer
 
     protected function isFormType(Tokens $tokens)
     {
-        if (!$this->hasUseDeclarations($tokens, ['Symfony', 'Component', 'Form', 'AbstractType'])) {
+        if (!$this->hasUseStatements($tokens, ['Symfony', 'Component', 'Form', 'AbstractType'])) {
             return false;
         }
 
@@ -55,36 +55,9 @@ abstract class FormTypeFixer extends AbstractFixer
 
     protected function addTypeUse(Tokens $tokens, $name)
     {
-        if ($this->hasUseDeclarations($tokens, ['Symfony', 'Component', 'Form', 'Extension', 'Core', 'Type', ucfirst($name).'Type'])) {
-            return;
-        }
-
-        $importUseIndexes = $tokens->getImportUseIndexes();
-        if (!isset($importUseIndexes[0])) {
-            return;
-        }
-
-        $tokens->insertAt(
-            $importUseIndexes[0],
-            [
-                new Token([T_USE, 'use']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_STRING, 'Symfony']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Component']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Form']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Extension']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Core']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Type']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, ucfirst($name).'Type']),
-                new Token(';'),
-                new Token([T_WHITESPACE, PHP_EOL]),
-            ]
+        $this->addUseStatement(
+            $tokens,
+            ['Symfony', 'Component', 'Form', 'Extension', 'Core', 'Type', ucfirst($name).'Type']
         );
     }
 }

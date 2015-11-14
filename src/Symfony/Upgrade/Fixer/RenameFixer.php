@@ -6,21 +6,6 @@ use Symfony\CS\Tokenizer\Tokens;
 
 abstract class RenameFixer extends AbstractFixer
 {
-    protected function renameUseStatements(Tokens $tokens, array $oldFqcn, $newClassName)
-    {
-        $matchedTokens = $this->getUseDeclarations($tokens, $oldFqcn);
-        if (null === $matchedTokens) {
-            return false;
-        }
-
-        $matchedTokensIndexes = array_keys($matchedTokens);
-
-        $classNameToken = $matchedTokens[$matchedTokensIndexes[count($matchedTokensIndexes) - 2]];
-        $classNameToken->setContent($newClassName);
-
-        return true;
-    }
-
     protected function renameNewStatements(Tokens $tokens, $old, $new)
     {
         $matchedTokens = $tokens->findSequence([
