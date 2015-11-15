@@ -63,6 +63,14 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 | Name  | Description |
 | ----  | ----------- |%s
 
+## Real Life Examples
+
+It is tested against few cool Symfony projects:
+
+* [Sylius](https://github.com/Sylius/Sylius/pull/3571)
+* [OroPlatform](https://github.com/orocrm/platform/pull/345)
+* [Akeneo PIM](https://github.com/akeneo/pim-community-dev/pull/3571)
+
 ## Contribute
 
 The tool is based on PHP Coding Standards Fixer and the [contributing process](https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md) is very similar. I see no sense in re-doing it so far.
