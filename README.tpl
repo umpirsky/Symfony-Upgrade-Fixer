@@ -2,6 +2,28 @@
 
 Analyzes your Symfony project and tries to make it compatible with the new version of Symfony framework.
 
+## Installation
+
+#### Local
+
+```bash
+composer require umpirsky/symfony-upgrade-fixer
+```
+
+#### Global
+
+```bash
+composer global require umpirsky/symfony-upgrade-fixer
+```
+
+Make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
+you're good to go:
+
+```bash
+    export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
+Don't forget to add this line in your '.bashrc' file if you want to keep this change after reboot.
+
 ## Usage
 
 The ``fix`` command tries to fix as much upgrade issues as possible on a given file or directory:
