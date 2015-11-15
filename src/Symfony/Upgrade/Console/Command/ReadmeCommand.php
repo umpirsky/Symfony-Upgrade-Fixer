@@ -5,6 +5,7 @@ namespace Symfony\Upgrade\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Upgrade\Fixer;
 use Symfony\Upgrade\Fixer\Iterator\FixerIterator;
 
 class ReadmeCommand extends Command
@@ -26,6 +27,7 @@ class ReadmeCommand extends Command
 
         $output->write(sprintf(
             file_get_contents(__DIR__.'/../../../../../README.tpl'),
+            Fixer::VERSION,
             $fixersContent
         ));
     }
