@@ -14,3 +14,7 @@ before_script:
 
 script:
     - phpunit
+
+matrix:
+  allow_failures:
+    - php: 7.0
