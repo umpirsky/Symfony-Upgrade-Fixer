@@ -10,7 +10,7 @@ class FormEventsFixer extends RenameFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $used = $this->hasUseDeclarations(
+        $used = $this->hasUseStatements(
             $tokens,
             ['Symfony', 'Component', 'Form', 'FormEvents']
         );
