@@ -41,16 +41,7 @@ abstract class FormTypeFixer extends AbstractFixer
 
     protected function isFormType(Tokens $tokens)
     {
-        if (!$this->hasUseStatements($tokens, ['Symfony', 'Component', 'Form', 'AbstractType'])) {
-            return false;
-        }
-
-        return null !== $tokens->findSequence([
-            [T_CLASS],
-            [T_STRING],
-            [T_EXTENDS],
-            [T_STRING, 'AbstractType'],
-        ]);
+        return $this->extendsClass($tokens, ['Symfony', 'Component', 'Form', 'AbstractType']);
     }
 
     protected function addTypeUse(Tokens $tokens, $name)

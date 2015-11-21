@@ -77,4 +77,18 @@ abstract class AbstractFixer extends BaseAbstractFixer
             )
         );
     }
+
+    protected function extendsClass(Tokens $tokens, array $fqcn)
+    {
+        if (!$this->hasUseStatements($tokens, $fqcn)) {
+            return false;
+        }
+
+        return null !== $tokens->findSequence([
+            [T_CLASS],
+            [T_STRING],
+            [T_EXTENDS],
+            [T_STRING, array_pop($fqcn)],
+        ]);
+    }
 }
