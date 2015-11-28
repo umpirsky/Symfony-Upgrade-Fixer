@@ -2,7 +2,6 @@
 
 namespace Symfony\Upgrade\Fixer;
 
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 abstract class FormTypeFixer extends AbstractFixer
