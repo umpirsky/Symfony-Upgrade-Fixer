@@ -7,6 +7,8 @@ use Symfony\CS\Tokenizer\Tokens;
 
 class GetRequestFixer extends AbstractFixer
 {
+    private $requestVariableName = '$request';
+
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -76,7 +78,7 @@ class GetRequestFixer extends AbstractFixer
         }
 
         if (null === $requestVariableName = $this->getRequestVariableName($tokens, $curlyBraceIndexes[0], $curlyBraceIndexes[1])) {
-            return;
+            $requestVariableName = $this->requestVariableName;
         }
 
         $insertAt = $tokens->getNextMeaningfulToken($parenthesisIndexes[0]);
@@ -109,15 +111,28 @@ class GetRequestFixer extends AbstractFixer
         }
 
         $clearFrom = $tmp = $this->getRequestVariableTokenIndex($tokens, $curlyBraceIndexes[0], $curlyBraceIndexes[1]);
-        $keys = array_keys($this->getGetRequestSequence($tokens, $curlyBraceIndexes[0], $curlyBraceIndexes[1]));
+        $getRequestSequenceTokens = $this->getGetRequestSequence($tokens, $curlyBraceIndexes[0], $curlyBraceIndexes[1]);
+        $keys = array_keys($getRequestSequenceTokens);
         $clearTo = array_pop($keys);
         $clearTo = $tokens->getNextMeaningfulToken($clearTo);
-        if (!$tokens[$clearTo]->equals(';')) {
+        if ($tokens[$clearTo]->equals(';')) {
+            $tokens->clearRange($clearFrom, $clearTo);
+            $tokens->removeTrailingWhitespace($clearTo);
+
             return;
         }
 
-        $tokens->clearRange($clearFrom, $clearTo);
-        $tokens->removeTrailingWhitespace($clearTo);
+        $replace = true;
+        foreach ($getRequestSequenceTokens as $key => $getRequestSequenceToken) {
+            if ($replace) {
+                $getRequestSequenceToken->override([T_VARIABLE, $this->requestVariableName]);
+
+                $replace = false;
+                continue;
+            }
+
+            $tokens[$key]->clear();
+        }
     }
 
     private function isAction(Tokens $tokens, $index)
@@ -179,6 +194,10 @@ class GetRequestFixer extends AbstractFixer
     private function getRequestVariableName(Tokens $tokens, $start, $end)
     {
         $requestVariableTokenIndex = $this->getRequestVariableTokenIndex($tokens, $start, $end);
+        if (null === $requestVariableTokenIndex) {
+            return;
+        }
+
         $requestVariableToken = $tokens[$requestVariableTokenIndex];
         if (!$requestVariableToken->isGivenKind(T_VARIABLE)) {
             return;
@@ -187,16 +206,16 @@ class GetRequestFixer extends AbstractFixer
         return $requestVariableToken->getContent();
     }
 
-    private function getRequestSequenceStartTokenIndex(Tokens $tokens, $start, $end)
+    private function getRequestVariableTokenIndex(Tokens $tokens, $start, $end)
     {
         $getRequestSequence = $this->getGetRequestSequence($tokens, $start, $end);
 
-        return array_keys($getRequestSequence)[0];
-    }
+        $getRequestSequenceKeys = array_keys($getRequestSequence);
+        $getRequestSequenceStartIndex = $getRequestSequenceKeys[0];
 
-    private function getRequestVariableTokenIndex(Tokens $tokens, $start, $end)
-    {
-        $getRequestSequenceStartIndex = $this->getRequestSequenceStartTokenIndex($tokens, $start, $end);
+        if (';' !== $tokens[$tokens->getNextMeaningfulToken(array_pop($getRequestSequenceKeys))]->getContent()) {
+            return;
+        }
 
         $assignTokenIndex = $tokens->getPrevMeaningfulToken($getRequestSequenceStartIndex);
         if ('=' !== $tokens[$assignTokenIndex]->getContent()) {
