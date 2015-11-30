@@ -16,7 +16,7 @@ You can run these commands to easily access ``symfony-upgrade-fixer`` from anywh
 your system:
 
 ```bash
-$ sudo wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.1/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer
+$ sudo wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.2/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer
 $ sudo chmod a+x /usr/local/bin/symfony-upgrade-fixer
 ```
 Then, just run ``symfony-upgrade-fixer``.
@@ -67,6 +67,7 @@ $ symfony-upgrade-fixer fix /path/to/code --dry-run
 | form_option_names | Options precision and virtual was renamed to scale and inherit_data. |
 | form_parent_type | Returning type instances from FormTypeInterface::getParent() is deprecated, return the fully-qualified class name of the parent type class instead. |
 | form_type_names | Instead of referencing types by name, you should reference them by their fully-qualified class name (FQCN) instead. |
+| get_request | The getRequest method of the base controller class was removed, request object is injected in the action method instead. |
 | inherit_data_aware_iterator | The class VirtualFormAwareIterator was renamed to InheritDataAwareIterator. |
 | progress_bar | ProgressHelper has been removed in favor of ProgressBar. |
 | property_access | Renamed PropertyAccess::getPropertyAccessor to PropertyAccess::createPropertyAccessor. |
