@@ -8,13 +8,13 @@ use Symfony\CS\Tokenizer\Tokens;
 class FormGetnameToGetblockprefixFixer extends FormTypeFixer
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
 
-        if ($this->isFormType($tokens) && null !== $this->matchGetNameMethod($tokens)) {
+        if ($this->isFormType($tokens)) {
             $this->fixGetNameMethod($tokens);
         }
 
@@ -35,13 +35,17 @@ class FormGetnameToGetblockprefixFixer extends FormTypeFixer
     private function fixGetNameMethod(Tokens $tokens)
     {
         $matchedTokens = $this->matchGetNameMethod($tokens);
+        if (null === $matchedTokens) {
+            return;
+        }
+
         $matchedIndexes = array_keys($matchedTokens);
         $matchedIndex = $matchedIndexes[count($matchedIndexes) - 3];
         $matchedTokens[$matchedIndex]->setContent('getBlockPrefix');
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
