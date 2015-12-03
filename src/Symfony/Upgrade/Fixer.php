@@ -12,7 +12,7 @@ use Symfony\Upgrade\Fixer\Iterator\FixerIterator;
 
 class Fixer
 {
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.3';
 
     private $fixers = [];
     private $finder;
