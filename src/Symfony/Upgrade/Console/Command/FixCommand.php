@@ -4,6 +4,7 @@ namespace Symfony\Upgrade\Console\Command;
 
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Finder\DefaultFinder;
+use Symfony\CS\Fixer\Contrib\OrderedUseFixer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,6 +40,7 @@ class FixCommand extends Command
             $stopwatch
         );
         $this->fixer->registerBuiltInFixers();
+        $this->fixer->addFixer(new OrderedUseFixer());
 
         $stopwatch->start('fixFiles');
 
