@@ -2,7 +2,6 @@
 
 namespace Symfony\Upgrade\Fixer;
 
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 class FormGetnameToGetblockprefixFixer extends FormTypeFixer
@@ -21,6 +20,17 @@ class FormGetnameToGetblockprefixFixer extends FormTypeFixer
         return $tokens->generateCode();
     }
 
+    private function hasBlockPrefix(Tokens $tokens)
+    {
+        return count($tokens->findSequence([
+            [T_PUBLIC, 'public'],
+            [T_FUNCTION],
+            [T_STRING, 'getBlockPrefix'],
+            '(',
+            ')',
+        ])) > 0;
+    }
+
     private function matchGetNameMethod(Tokens $tokens)
     {
         return $tokens->findSequence([
@@ -28,14 +38,14 @@ class FormGetnameToGetblockprefixFixer extends FormTypeFixer
             [T_FUNCTION],
             [T_STRING, 'getName'],
             '(',
-            ')'
+            ')',
         ]);
     }
 
     private function fixGetNameMethod(Tokens $tokens)
     {
         $matchedTokens = $this->matchGetNameMethod($tokens);
-        if (null === $matchedTokens) {
+        if (null === $matchedTokens || $this->hasBlockPrefix($tokens)) {
             return;
         }
 
