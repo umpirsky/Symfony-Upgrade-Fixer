@@ -17,8 +17,12 @@ class FormTypeNamesFixer extends FormTypeFixer
                     continue;
                 }
 
-                $this->addTypeUse($tokens, $type);
-                $this->fixTypeNames($tokens, $type);
+                if (PHP_VERSION_ID < 50500) {
+                    $this->fixTypeNamesLegacy($tokens, $type);
+                } else {
+                    $this->addTypeUse($tokens, $type);
+                    $this->fixTypeNames($tokens, $type);
+                }
             }
         }
 
@@ -63,5 +67,21 @@ class FormTypeNamesFixer extends FormTypeFixer
         $matchedTokens[$matchedIndex]->override([CT_CLASS_CONSTANT, 'class']);
 
         $this->fixTypeNames($tokens, $name);
+    }
+
+    private function fixTypeNamesLegacy(Tokens $tokens, $name)
+    {
+        $matchedTokens = $this->matchTypeName($tokens, $name);
+        if (null === $matchedTokens) {
+            return;
+        }
+
+        $matchedIndexes = array_keys($matchedTokens);
+
+        $matchedIndex = $matchedIndexes[count($matchedIndexes) - 1];
+
+        $matchedTokens[$matchedIndex]->setContent('\'Symfony\\Component\\Form\\Extension\\Core\\Type\\'.$name.'Type\'');
+
+        $this->fixTypeNamesLegacy($tokens, $name);
     }
 }

@@ -14,8 +14,10 @@ class FormTypeNamesFixerTest extends AbstractFixerTestBase
 
     public function provideExamples()
     {
+        $outputFile = PHP_VERSION_ID > 50500 ? 'case1-output-php55+.php' : 'case1-output-php54.php';
+
         return [
-            $this->prepareTestCase('case1-output.php', 'case1-input.php'),
+            $this->prepareTestCase($outputFile, 'case1-input.php'),
         ];
     }
 }
