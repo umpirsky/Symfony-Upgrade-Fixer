@@ -15,6 +15,7 @@ abstract class FormTypeFixer extends AbstractFixer
         'Country',
         'Currency',
         'DateTime',
+        'Date',
         'Email',
         'File',
         'Hidden',
