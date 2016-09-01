@@ -76,6 +76,12 @@ The ``--dry-run`` option displays the files that need to be fixed but without ac
 $ symfony-upgrade-fixer fix /path/to/code --dry-run
 ```
 
+The ``--no-use-reorder`` option prevents the fixer from re-ordering USE statements:
+
+```bash
+$ symfony-upgrade-fixer fix /path/to/code --no-use-reorder
+```
+
 ## Fixers available
 
 | Name  | Description |
