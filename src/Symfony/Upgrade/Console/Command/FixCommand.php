@@ -23,6 +23,7 @@ class FixCommand extends Command
                 [
                     new InputArgument('path', InputArgument::REQUIRED),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
+                    new InputOption('no-use-reorder', '', InputOption::VALUE_NONE, 'Dot not reorder USE statements alphabetically'),
                 ]
             )
             ->setDescription('Fixes a directory or a file')
@@ -40,7 +41,10 @@ class FixCommand extends Command
             $stopwatch
         );
         $this->fixer->registerBuiltInFixers();
-        $this->fixer->addFixer(new OrderedUseFixer());
+
+        if (! $input->getOption('no-use-reorder')) {
+            $this->fixer->addFixer(new OrderedUseFixer());
+        }
 
         $stopwatch->start('fixFiles');
 
