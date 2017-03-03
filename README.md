@@ -34,7 +34,7 @@ You can run these commands to easily access ``symfony-upgrade-fixer`` from anywh
 your system:
 
 ```bash
-$ sudo wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.4/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer
+$ sudo wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.6/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer
 $ sudo chmod a+x /usr/local/bin/symfony-upgrade-fixer
 ```
 Then, just run ``symfony-upgrade-fixer``.
