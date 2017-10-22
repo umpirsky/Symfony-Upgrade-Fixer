@@ -18,6 +18,7 @@ abstract class FormTypeFixer extends AbstractFixer
         'Date',
         'Email',
         'File',
+        'Form',
         'Hidden',
         'Integer',
         'Language',
