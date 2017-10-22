@@ -8,6 +8,7 @@ use Symfony\CS\Tokenizer\Tokens;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Upgrade\Fixer\AbstractFixer;
 use Symfony\Upgrade\Fixer\Iterator\FixerIterator;
 
 class Fixer
@@ -29,10 +30,21 @@ class Fixer
         $this->stopwatch = $stopwatch;
     }
 
-    public function registerBuiltInFixers()
+    public function registerAllBuiltInFixers()
     {
+        /** @var AbstractFixer $fixer */
         foreach (new FixerIterator() as $fixer) {
             $this->addFixer($fixer);
+        }
+    }
+
+    public function registerBuiltInFixers(array $fixerNameList)
+    {
+        /** @var AbstractFixer $fixer */
+        foreach (new FixerIterator() as $fixer) {
+            if (in_array($fixer->getName(), $fixerNameList, true)) {
+                $this->addFixer($fixer);
+            }
         }
     }
 

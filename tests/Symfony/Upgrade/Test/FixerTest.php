@@ -16,7 +16,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     public function testThatRegisterBuiltInFixers(Fixer $fixer)
     {
         $this->assertCount(0, $fixer->getFixers());
-        $fixer->registerBuiltInFixers();
+        $fixer->registerAllBuiltInFixers();
         $this->assertGreaterThan(0, count($fixer->getFixers()));
     }
 
@@ -66,7 +66,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     public function provideFixersDescriptionConsistencyCases()
     {
         $fixer = new Fixer(new \ArrayIterator([new StdinFileInfo()]));
-        $fixer->registerBuiltInFixers();
+        $fixer->registerAllBuiltInFixers();
         $fixers = $fixer->getFixers();
         $cases = [];
 

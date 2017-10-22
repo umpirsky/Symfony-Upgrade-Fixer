@@ -82,6 +82,11 @@ The ``--no-use-reorder`` option prevents the fixer from re-ordering USE statemen
 $ symfony-upgrade-fixer fix /path/to/code --no-use-reorder
 ```
 
+The ``--fixers`` option allows to specify which fixers should be used:
+```bash
+$ symfony-upgrade-fixer fix /path/to/code --fixers=get_request,form_events,property_access
+```
+
 ## Fixers available
 
 | Name  | Description |

@@ -24,6 +24,7 @@ class FixCommand extends Command
                     new InputArgument('path', InputArgument::REQUIRED),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('no-use-reorder', '', InputOption::VALUE_NONE, 'Dot not reorder USE statements alphabetically'),
+                    new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'Use only specified fixers (separated by comma)'),
                 ]
             )
             ->setDescription('Fixes a directory or a file')
@@ -35,20 +36,28 @@ class FixCommand extends Command
         $errorsManager = new ErrorsManager();
         $stopwatch = new Stopwatch();
 
-        $this->fixer = new Fixer(
+        $fixer = new Fixer(
             $this->getFinder($input->getArgument('path')),
             $errorsManager,
             $stopwatch
         );
-        $this->fixer->registerBuiltInFixers();
+
+        if ($fixers = $input->getOption('fixers')) {
+            $fixersList = explode(',', $fixers);
+            $fixersList = array_map('trim', $fixersList);
+            $fixer->registerBuiltInFixers($fixersList);
+        } else {
+            $fixer->registerAllBuiltInFixers();
+        }
+
 
         if (! $input->getOption('no-use-reorder')) {
-            $this->fixer->addFixer(new OrderedUseFixer());
+            $fixer->addFixer(new OrderedUseFixer());
         }
 
         $stopwatch->start('fixFiles');
 
-        $changed = $this->fixer->fix(
+        $changed = $fixer->fix(
             $input->getOption('dry-run')
         );
 
