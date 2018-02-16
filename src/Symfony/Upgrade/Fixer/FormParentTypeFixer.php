@@ -12,13 +12,15 @@ class FormParentTypeFixer extends FormTypeFixer
         $tokens = Tokens::fromCode($content);
 
         if ($this->isFormType($tokens)) {
+            $className = $this->getCurrentTypeClass($tokens);
             foreach ($this->types as $type) {
                 if (null === $this->matchGetParentMethod($tokens, $type)) {
                     continue;
                 }
 
-                $this->addTypeUse($tokens, $type);
-                $this->fixParentTypes($tokens, $type);
+                $alias = $this->getTypeClassAlias($type, $className);
+                $this->addTypeUse($tokens, $type, $alias);
+                $this->fixParentTypes($tokens, $type, $alias);
             }
         }
 
@@ -46,7 +48,7 @@ class FormParentTypeFixer extends FormTypeFixer
         ]);
     }
 
-    private function fixParentTypes(Tokens $tokens, $name)
+    private function fixParentTypes(Tokens $tokens, $name, $alias)
     {
         $matchedTokens = $this->matchGetParentMethod($tokens, $name);
         if (null === $matchedTokens) {
@@ -60,12 +62,12 @@ class FormParentTypeFixer extends FormTypeFixer
         $tokens->insertAt(
             $matchedIndex,
             [
-                new Token([T_STRING, $name.'Type']),
+                new Token([T_STRING, $alias ? $alias : $name.'Type']),
                 new Token([T_DOUBLE_COLON, '::']),
             ]
         );
         $matchedTokens[$matchedIndex]->override([CT_CLASS_CONSTANT, 'class']);
 
-        $this->fixParentTypes($tokens, $name);
+        $this->fixParentTypes($tokens, $name, $alias);
     }
 }

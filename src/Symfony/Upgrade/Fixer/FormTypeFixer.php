@@ -2,10 +2,13 @@
 
 namespace Symfony\Upgrade\Fixer;
 
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 abstract class FormTypeFixer extends AbstractFixer
 {
+    const PREFIX_SYMFONY_TYPE = 'Symfony';
+
     protected $types = [
         'Birthday',
         'Button',
@@ -45,11 +48,47 @@ abstract class FormTypeFixer extends AbstractFixer
         return $this->extendsClass($tokens, ['Symfony', 'Component', 'Form', 'AbstractType']);
     }
 
-    protected function addTypeUse(Tokens $tokens, $name)
+    protected function getCurrentTypeClass(Tokens $tokens)
+    {
+        $tokens = $this->extendsClass($tokens, ['Symfony', 'Component', 'Form', 'AbstractType']);
+
+        $classMet = false;
+        /** @var Token $token */
+        foreach ($tokens as $token) {
+            if (!$classMet) {
+                $classMet = $token->getId() === T_CLASS;
+                continue;
+            }
+
+            if (!$token->isEmpty()) {
+                return $token->getContent();
+            }
+        }
+
+        return null;
+    }
+
+    protected function addTypeUse(Tokens $tokens, $name, $alias = null)
     {
         $this->addUseStatement(
             $tokens,
-            ['Symfony', 'Component', 'Form', 'Extension', 'Core', 'Type', ucfirst($name).'Type']
+            ['Symfony', 'Component', 'Form', 'Extension', 'Core', 'Type', $this->getTypeName($name)],
+            $alias
         );
+    }
+
+    protected function getTypeName($name)
+    {
+        return ucfirst($name).'Type';
+    }
+
+    protected function getTypeClassAlias($type, $currentClassName)
+    {
+        $typeClass = $this->getTypeName($type);
+        if ($typeClass === $currentClassName) {
+            return self::PREFIX_SYMFONY_TYPE.$typeClass;
+        }
+
+        return null;
     }
 }

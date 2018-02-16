@@ -44,7 +44,7 @@ abstract class AbstractFixer extends BaseAbstractFixer
         return true;
     }
 
-    protected function addUseStatement(Tokens $tokens, array $fqcn)
+    protected function addUseStatement(Tokens $tokens, array $fqcn, $alias = null)
     {
         if ($this->hasUseStatements($tokens, $fqcn)) {
             return;
@@ -61,6 +61,13 @@ abstract class AbstractFixer extends BaseAbstractFixer
             $fqcnTokens[] = new Token([T_NS_SEPARATOR, '\\']);
         }
         array_pop($fqcnTokens);
+
+        if ($alias) {
+            $fqcnTokens[] = new Token([T_WHITESPACE, ' ']);
+            $fqcnTokens[] = new Token([T_AS, 'as']);
+            $fqcnTokens[] = new Token([T_WHITESPACE, ' ']);
+            $fqcnTokens[] = new Token([T_STRING, $alias]);
+        }
 
         $tokens->insertAt(
             $importUseIndexes[0],
@@ -84,7 +91,7 @@ abstract class AbstractFixer extends BaseAbstractFixer
             return false;
         }
 
-        return null !== $tokens->findSequence([
+        return $tokens->findSequence([
             [T_CLASS],
             [T_STRING],
             [T_EXTENDS],

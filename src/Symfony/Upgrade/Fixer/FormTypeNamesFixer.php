@@ -12,6 +12,7 @@ class FormTypeNamesFixer extends FormTypeFixer
         $tokens = Tokens::fromCode($content);
 
         if ($this->isFormType($tokens)) {
+            $className = $this->getCurrentTypeClass($tokens);
             foreach ($this->types as $type) {
                 if (null === $this->matchTypeName($tokens, $type)) {
                     continue;
@@ -20,8 +21,9 @@ class FormTypeNamesFixer extends FormTypeFixer
                 if (PHP_VERSION_ID < 50500) {
                     $this->fixTypeNamesLegacy($tokens, $type);
                 } else {
-                    $this->addTypeUse($tokens, $type);
-                    $this->fixTypeNames($tokens, $type);
+                    $alias = $this->getTypeClassAlias($type, $className);
+                    $this->addTypeUse($tokens, $type, $alias);
+                    $this->fixTypeNames($tokens, $type, $alias);
                 }
             }
         }
@@ -46,7 +48,7 @@ class FormTypeNamesFixer extends FormTypeFixer
         ]);
     }
 
-    private function fixTypeNames(Tokens $tokens, $name)
+    private function fixTypeNames(Tokens $tokens, $name, $alias)
     {
         $matchedTokens = $this->matchTypeName($tokens, $name);
         if (null === $matchedTokens) {
@@ -60,13 +62,13 @@ class FormTypeNamesFixer extends FormTypeFixer
         $tokens->insertAt(
             $matchedIndex,
             [
-                new Token([T_STRING, $name.'Type']),
+                new Token([T_STRING, $alias ? $alias : $name.'Type']),
                 new Token([T_DOUBLE_COLON, '::']),
             ]
         );
         $matchedTokens[$matchedIndex]->override([CT_CLASS_CONSTANT, 'class']);
 
-        $this->fixTypeNames($tokens, $name);
+        $this->fixTypeNames($tokens, $name, $alias);
     }
 
     private function fixTypeNamesLegacy(Tokens $tokens, $name)

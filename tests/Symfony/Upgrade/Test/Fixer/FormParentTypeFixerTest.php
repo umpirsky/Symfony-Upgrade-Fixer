@@ -16,6 +16,7 @@ class FormParentTypeFixerTest extends AbstractFixerTestBase
     {
         return [
             $this->prepareTestCase('case1-output.php', 'case1-input.php'),
+            $this->prepareTestCase('case2-output.php', 'case2-input.php'),
         ];
     }
 }

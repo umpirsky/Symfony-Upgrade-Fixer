@@ -8,6 +8,6 @@ class TextType extends AbstractType
 {
     public function getParent()
     {
-        return 'hidden';
+        return 'text';
     }
 }
